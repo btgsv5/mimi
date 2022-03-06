@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+	<head>
+		<div th:include="~{index :: head}"></div>
+		<link rel="stylesheet" th:href="@{/css/login.css}" />
+	</head>
+
+	<body>
+		<div id="login">
+			<div id="top">
+				<img th:src="@{/images/cloud.jpg}" /><span>LOGIN</span>
+			</div>
+			<div id="bottom">
+				<form th:action="@{/admin/login}" method="post">
+					<table border="0px" id="table">
+						<tr>
+							<td class="td1">用户名：</td>
+							<td><input type="text" value="admin" placeholder="Username" class="td2" name="name"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><span id="nameerr"></span></td>
+						</tr>
+						<tr>
+							<td class="td1">密码：</td>
+							<td><input type="password"  value="000000" placeholder="Password" class="td2" name="pwd"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><span id="pwderr"></span></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="登录" class="td3">
+								<a th:href="@{/regist.html}"><input type="button" value="注册" class="td3"></a>
+							</td>
+						</tr>
+					</table>
+				</form>
+				<span th:text="${#session.getAttribute('errmsg')}" style="color: red"></span>
+
+			</div>
+
+		</div>
+	</body>
+
+</html>

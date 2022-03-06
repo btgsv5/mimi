@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:include="~{ index :: head}"></div>
+		<link rel="stylesheet" th:href="@{/css/addBook.css}" />
+        <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+        <script type="text/javascript" th:src="@{/js/ajaxfileupload.js}"></script>
+	</head>
+    <script type="text/javascript" th:inline="javascript">
+        function fileChange(){
+			$.ajaxFileUpload({
+				url:"/prod/ajaxImg",
+				secureuri: false,
+				fileElementId: 'pimage',
+				dataType:"json",
+				success:function (obj) {
+					//清空div
+					$("#imgDiv").empty();
+					//创建一个图片的标签
+					var imgObj = $("<img>");
+					 alert(obj.imgurl);
+					imgObj.attr("src","/image_big/"+obj.imgurl);
+					imgObj.attr("width","100px");
+					imgObj.attr("height","100px");
+					//将图片追加到imgDiv
+					$("#imgDiv").html(imgObj);
+				}
+			});
+
+        }
+    </script>
+	<body>
+	<!--取出上一个页面上带来的page的值-->
+
+		<div id="addAll">
+			<div id="nav">
+				<p>商品管理>新增商品</p>
+			</div>
+
+			<div id="table">
+				<form  id="myform" th:action="@{/prod/save}">
+					<table>
+						<tr>
+							<td class="one">商品名称</td>
+							<td><input type="text" name="pName" class="two"></td>
+						</tr>
+						<!--错误提示-->
+						<tr class="three">
+							<td class="four"></td>
+							<td><span id="pnameerr"></span></td>
+						</tr>
+						<tr>
+							<td class="one">商品介绍</td>
+							<td><input type="text" name="pContent" class="two"></td>
+						</tr>
+						<!--错误提示-->
+						<tr class="three">
+							<td class="four"></td>
+							<td><span id="pcontenterr"></span></td>
+						</tr>
+						<tr>
+							<td class="one">定价</td>
+							<td><input type="number" name="pPrice" class="two"></td>
+						</tr>
+						<!--错误提示-->
+						<tr class="three">
+							<td class="four"></td>
+							<td><span id="priceerr"></span></td>
+						</tr>
+						
+						<tr>
+							<td class="three">图片介绍</td>
+                            <td> <br><div id="imgDiv" style="display:block; width: 50px; height: 50px;"></div><br><br><br><br>
+                            <input type="file" id="pimage" name="pimage" onchange="fileChange()" >
+                                <span id="imgName" ></span><br>
+
+                            </td>
+						</tr>
+						<tr class="three">
+							<td class="four"></td>
+							<td><span></span></td>
+						</tr>
+						
+						<tr>
+							<td class="one">总数量</td>
+							<td><input type="number" name="pNumber" class="two"></td>
+						</tr>
+						<!--错误提示-->
+						<tr class="three">
+							<td class="four"></td>
+							<td><span id="numerr"></span></td>
+						</tr>
+						
+						
+						<tr>
+							<td class="one">类别</td>
+							<td>
+								<select name="typeId">
+									<option th:each="type:${session.typeList}"
+											th:value="${type.typeId}">
+										[[${type.typeName}]]
+									</option>
+								</select>
+								<!--<select name="typeId" >
+									<c:forEach items="${typeList}" var="type">
+										<option value="${type.typeId}">${type.typeName}</option>
+									</c:forEach>
+								</select>-->
+							</td>
+						</tr>
+						<!--错误提示-->
+						<tr class="three">
+							<td class="four"></td>
+							<td><span></span></td>
+						</tr>
+
+						<tr>
+							<td>
+								<input type="submit" value="提交" class="btn btn-success">
+							</td>
+							<td>
+								<input type="reset" value="取消" class="btn btn-default" onclick="myclose([[${param.page}]])">
+								<script type="text/javascript">
+									function myclose(ispage) {
+										window.location="/prod/split?page="+ispage;
+									}
+								</script>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</body>
+
+</html>
