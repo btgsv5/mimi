@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.mapper.ProductInfoMapper">
+    <select id="selectCondition" parameterType="com.zj.pojo.vo.ProductInfoVo" resultType="com.zj.pojo.ProductInfo">
+        select p_id,
+        p_name,
+        p_content,
+        p_price,
+        p_image,
+        p_number,
+        type_id
+        from product_info
+<where>
+    <if test="pName != null and pName !=''">
+        and p_name like "%"#{pName}"%"
+    </if>
+    <if test="typeId != -1 and typeId != null">
+        and type_id = #{typeId}
+    </if>
+    <if test="(lPrice != null and lPrice !='') and (hPrice == null or hPrice =='')">
+        and p_price &gt;=#{lPrice}
+    </if>
+    <if test="(hPrice != null and hPrice !='') and (lPrice == null or lPrice =='')">
+        and p_price &lt;=#{hPrice}
+    </if>
+    <if test="(lPrice != null and lPrice !='') and (hPrice != null and hPrice !='')">
+        and p_price between #{lPrice} and #{hPrice}
+    </if>
+</where>
+    order by p_id desc limit #{page},5
+    </select>
+
+    <select id="selectConditionCount" parameterType="com.zj.pojo.vo.ProductInfoVo" resultType="Integer">
+        select count(*)
+        from product_info
+        <where>
+            <if test="pName != null and pName !=''">
+                and p_name like "%"#{pName}"%"
+            </if>
+            <if test="typeId != -1 and typeId != null">
+                and type_id = #{typeId}
+            </if>
+            <if test="(lPrice != null and lPrice !='') and (hPrice == null or hPrice =='')">
+                and p_price &gt;=#{lPrice}
+            </if>
+            <if test="(hPrice != null and hPrice !='') and (lPrice == null or lPrice =='')">
+                and p_price &lt;=#{hPrice}
+            </if>
+            <if test="(lPrice != null and lPrice !='') and (hPrice != null and hPrice !='')">
+                and p_price between #{lPrice} and #{hPrice}
+            </if>
+        </where>
+    </select>
+</mapper>
